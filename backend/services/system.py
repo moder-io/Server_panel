@@ -8,6 +8,7 @@ DEFAULT_SERVICES = [
     "ssh",
     "pihole-FTL",
     "wg-quick@wg0",
+    "smbd",
 ]
 
 
@@ -101,7 +102,7 @@ def service_action(service: str, action: str) -> dict:
 
     try:
         r = subprocess.run(
-            ["systemctl", action, service],
+            ["sudo", "systemctl", action, service],
             capture_output=True,
             text=True,
             check=False,
