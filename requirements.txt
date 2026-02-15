@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+jinja2
+python-dotenv
+psutil
+itsdangerous
+python-multipart
+argon2-cffi

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/static/styles.css" />
+  <title>Error {{ status_code }}</title>
+</head>
+<body class="center">
+  <div class="card" style="max-width:720px; width:100%;">
+    <h1 style="font-size:22px; margin:0;">Ups… error {{ status_code }}</h1>
+    <p class="muted" style="margin-top:10px;">{{ message }}</p>
+
+    {% if detail %}
+      <div class="card" style="margin-top:14px; box-shadow:none;">
+        <div class="muted" style="font-size:12px; margin-bottom:6px;">Detalle</div>
+        <pre style="margin:0; white-space:pre-wrap;">{{ detail }}</pre>
+      </div>
+    {% endif %}
+
+    <div style="display:flex; gap:12px; margin-top:16px; flex-wrap:wrap;">
+      <a class="link" href="/dashboard">Volver al dashboard</a>
+      <a class="link" href="/login">Ir al login</a>
+    </div>
+  </div>
+</body>
+</html>

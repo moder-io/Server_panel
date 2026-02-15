@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/static/styles.css" />
+  <title>Login</title>
+  <link rel="icon" href="/static/img/icon.svg">
+</head>
+<body class="center">
+  <div class="login-wrap">
+    <div class="card">
+      <div style="display:flex; gap:12px; align-items:center;">
+        <div class="logo"><img src="/static/img/icon.svg" class="logo-img"></div>
+        <div>
+          <h1 style="font-size:22px; margin:0;">Server Panel</h1>
+          <p class="muted" style="margin-top:4px;">Inicia sesión</p>
+        </div>
+      </div>
+
+      <form method="post" action="/login" class="form" style="margin-top:14px;">
+        <input name="username" placeholder="Usuario" required />
+        <input name="password" placeholder="Contraseña" type="password" required />
+        <button class="primary" type="submit">Entrar</button>
+      </form>
+
+      {% if request.query_params.get("error") %}
+        <p class="error">Usuario o contraseña incorrectos.</p>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

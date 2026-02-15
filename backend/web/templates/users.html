@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/static/styles.css" />
+  <title>Server Panel</title>
+  <link rel="icon" href="/static/img/icon.svg">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo"><img src="/static/img/icon.svg" class="logo-img"></div>
+        <div>
+          <div style="font-weight:900;">Server Panel</div>
+          <div class="muted" style="font-size:12px;">Administración</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="/dashboard">
+          <span>Dashboard</span>
+          <span class="muted">↗</span>
+        </a>
+        <a class="active" href="/users">
+          <span>Usuarios</span>
+          <span class="muted">↗</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="card" style="padding:12px; box-shadow:none;">
+          <div style="font-weight:800;">{{ user }}</div>
+          <div class="muted" style="font-size:12px;">rol: {{ role }}</div>
+        </div>
+        <a class="link" href="/logout">Salir</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="container">
+        <header class="topbar">
+          <div>
+            <div style="font-weight:900; font-size:18px;">Usuarios</div>
+            <div class="muted" style="font-size:12px;">Crear, roles, activar/desactivar y resets</div>
+          </div>
+        </header>
+
+        <div class="grid">
+          <div class="card" style="grid-column: span 12;">
+            <h3>Crear usuario</h3>
+            <form method="post" action="/api/users" class="form" style="grid-template-columns: 1fr 1fr 180px 140px; display:grid; gap:10px;">
+              <input name="username" placeholder="usuario" required />
+              <input name="password" placeholder="contraseña" type="password" required />
+              <select name="role">
+                <option value="viewer">viewer</option>
+                <option value="admin">admin</option>
+              </select>
+              <button class="primary" type="submit">Crear</button>
+            </form>
+            <p class="muted" style="margin-top:10px; font-size:12px;">Tip: usa passwords ≥ 10 chars.</p>
+          </div>
+
+          <div class="card" style="grid-column: span 12;">
+            <h3>Lista</h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Usuario</th>
+                  <th>Rol</th>
+                  <th>Activo</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for u in users %}
+                <tr>
+                  <td><strong>{{ u.username }}</strong></td>
+                  <td><span class="badge">{{ u.role }}</span></td>
+                  <td>
+                    {% if u.is_active == 1 %}
+                      <span class="badge">active</span>
+                    {% else %}
+                      <span class="badge">disabled</span>
+                    {% endif %}
+                  </td>
+                  <td class="actions">
+                    <form method="post" action="/api/users/{{u.username}}/active">
+                      <input type="hidden" name="active" value="{{ 0 if u.is_active == 1 else 1 }}" />
+                      <button type="submit">{{ "Desactivar" if u.is_active == 1 else "Activar" }}</button>
+                    </form>
+
+                    <form method="post" action="/api/users/{{u.username}}/role" style="display:flex; gap:8px; align-items:center;">
+                      <select name="role">
+                        <option value="viewer" {% if u.role=="viewer" %}selected{% endif %}>viewer</option>
+                        <option value="admin" {% if u.role=="admin" %}selected{% endif %}>admin</option>
+                      </select>
+                      <button type="submit">Rol</button>
+                    </form>
+
+                    <form method="post" action="/api/users/{{u.username}}/password" style="display:flex; gap:8px; align-items:center;">
+                      <input name="password" placeholder="nueva pass" type="password" required />
+                      <button type="submit">Reset</button>
+                    </form>
+
+                    <form method="post" action="/api/users/{{u.username}}/delete"
+                          onsubmit="return confirm('¿Seguro que quieres borrar a {{u.username}}?');">
+                      <button class="danger" type="submit">Borrar</button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</body>
+</html>

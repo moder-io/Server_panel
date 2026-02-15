@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/static/styles.css" />
+  <title>Server Panel</title>
+  <link rel="icon" href="/static/img/icon.svg">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo"><img src="/static/img/icon.svg" class="logo-img"></div>
+        <div>
+          <div style="font-weight:900;">Server Panel</div>
+          <div class="muted" style="font-size:12px;">Panel local</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="active" href="/dashboard">
+          <span>Dashboard</span>
+          <span class="muted">↗</span>
+        </a>
+
+        {% if role == "admin" %}
+          <a href="/users">
+            <span>Usuarios</span>
+            <span class="muted">↗</span>
+          </a>
+        {% endif %}
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="card" style="padding:12px; box-shadow:none;">
+          <div style="font-weight:800;">{{ user }}</div>
+          <div class="muted" style="font-size:12px;">rol: {{ role }}</div>
+        </div>
+        <a class="link" href="/logout">Salir</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="container">
+        <header class="topbar">
+          <div>
+            <div style="font-weight:900; font-size:18px;">Dashboard</div>
+            <div class="muted" style="font-size:12px;">Estado del sistema y servicios</div>
+          </div>
+          <div class="muted" style="font-size:12px;">Actualiza cada 2s</div>
+        </header>
+
+        <div class="grid">
+          <div class="card kpi">
+            <div class="muted">CPU</div>
+            <div class="value" id="cpu">{{ stats.cpu_percent }}%</div>
+            <div class="sub">Uso total</div>
+          </div>
+
+          <div class="card kpi">
+            <div class="muted">RAM</div>
+            <div class="value" id="ram">{{ stats.ram_percent }}%</div>
+            <div class="sub" id="ram-sub">{{ stats.ram_used_gb }} / {{ stats.ram_total_gb }} GB</div>
+          </div>
+
+          <div class="card kpi">
+            <div class="muted">Disco</div>
+            <div class="value" id="disk">{{ stats.disk_percent }}%</div>
+            <div class="sub" id="disk-sub">{{ stats.disk_used_gb }} / {{ stats.disk_total_gb }} GB</div>
+          </div>
+
+          <div class="card kpi">
+            <div class="muted">Uptime</div>
+            <div class="value" id="uptime">{{ stats.uptime_seconds }} s</div>
+            <div class="sub">Tiempo encendido</div>
+          </div>
+        </div>
+
+        <div class="section-title">Servicios</div>
+        <div class="card">
+          <p class="muted" id="svc-note">Cargando servicios…</p>
+          <div id="services"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
